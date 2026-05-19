@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATM Cash Demand Forecasting</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f172a,#1e293b,#334155);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px;
+}
+
+.container{
+    width:100%;
+    max-width:950px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:24px;
+    padding:40px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.35);
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
+    margin-bottom:35px;
+}
+
+.title h1{
+    color:#fff;
+    font-size:32px;
+    font-weight:700;
+}
+
+.title p{
+    color:#cbd5e1;
+    margin-top:8px;
+    font-size:15px;
+}
+
+.badge{
+    background:#22c55e;
+    color:#fff;
+    padding:10px 18px;
+    border-radius:30px;
+    font-size:14px;
+    font-weight:600;
+}
+
+.form-box{
+    background:rgba(255,255,255,0.05);
+    border-radius:18px;
+    padding:28px;
+    margin-bottom:30px;
+}
+
+label{
+    color:#e2e8f0;
+    display:block;
+    margin-bottom:10px;
+    font-size:15px;
+}
+
+.input-group{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+input{
+    flex:1;
+    min-width:220px;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    outline:none;
+    font-size:16px;
+    background:#f8fafc;
+}
+
+button{
+    padding:16px 28px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#22c55e,#16a34a);
+    color:#fff;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px rgba(34,197,94,0.35);
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+    margin-top:25px;
+}
+
+.card{
+    background:rgba(255,255,255,0.06);
+    border-radius:18px;
+    padding:22px;
+    text-align:center;
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.card h3{
+    color:#94a3b8;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+.card h2{
+    color:#fff;
+    font-size:18px;
+    margin-bottom:12px;
+    font-weight:600;
+}
+
+.card p{
+    color:#22c55e;
+    font-size:24px;
+    font-weight:700;
+}
+
+.footer{
+    margin-top:30px;
+    color:#94a3b8;
+    font-size:13px;
+    text-align:center;
+}
+
+.error{
+    margin-top:20px;
+    color:#f87171;
+    font-size:15px;
+}
+
+@media(max-width:700px){
+
+.title h1{
+    font-size:26px;
+}
+
+.container{
+    padding:25px;
+}
+
+.input-group{
+    flex-direction:column;
+}
+
+button{
+    width:100%;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+    <div class="title">
+        <h1>ATM Cash Demand Forecasting</h1>
+        <p>Predict future ATM cash requirements using ARIMA Machine Learning Model</p>
+    </div>
+
+    <div class="badge">Live Prediction</div>
+</div>
+
+<div class="form-box">
+    <form action="/predict" method="post">
+        <label>Enter Number of Days to Forecast</label>
+
+        <div class="input-group">
+            <input type="number" name="days" min="1" max="30" placeholder="e.g. 7" required>
+            <button type="submit">Generate Forecast</button>
+        </div>
+    </form>
+</div>
+
+{% if prediction %}
+<div class="cards">
+
+{% for item in prediction %}
+<div class="card">
+    <h3>Forecast {{ loop.index }}</h3>
+    <h2>{{ item.date }}</h2>
+    <p>₹ {{ item.value }}</p>
+</div>
+{% endfor %}
+
+</div>
+{% endif %}
+
+{% if error %}
+<div class="error">
+    {{ error }}
+</div>
+{% endif %}
+
+<div class="footer">
+    Developed with Flask + ARIMA Forecasting Model
+</div>
+
+</div>
+
+</body>
+</html>
